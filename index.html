@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      article {
+        background-color: rgb(219, 216, 216);
+      }
+
+      section {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+        gap: 30px;
+      }
+
+      body {
+        margin: 50px;
+      }
+
+      p,
+      h2 {
+        padding-left: 20px;
+      }
+
+      img {
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <section id="data_menu"></section>
+    <template>
+      <article>
+        <img src="" alt="" />
+        <h2></h2>
+        <p id="info"></p>
+        <p id="pris"></p>
+      </article>
+    </template>
+
+    <script>
+      const url = "https://babushka-dd8a.restdb.io/rest/menu";
+
+      const options = {
+        headers: {
+          "x-apikey": "600ec2fb1346a1524ff12de4",
+        },
+      };
+
+      async function hentData() {
+        console.log("hent data");
+        const response = await fetch(url, options);
+        const json = await response.json();
+        vis(json);
+      }
+
+      hentData();
+
+      function vis(json) {
+        console.log(json);
+
+        const data = document.querySelector("#data_menu");
+        const retterTemplate = document.querySelector("template");
+
+        // løber retlisten igennem og indsætter data i en template
+        json.forEach((ret) => {
+          // placer retterne i HTML
+          let klon = retterTemplate.cloneNode(true).content;
+          klon.querySelector("h2").textContent = ret.navn;
+          klon.querySelector("#info").textContent = ret.kortbeskrivelse;
+          klon.querySelector("#pris").textContent = `Pris: ${ret.pris} DKK`;
+          klon.querySelector("img").src =
+            "medium/" + ret.billednavn + "-md.jpg";
+          data.appendChild(klon);
+        });
+      }
+    </script>
+  </body>
+</html>
