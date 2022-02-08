@@ -9,6 +9,7 @@
       article {
         background-color: rgb(219, 216, 216);
         border: 1px solid black;
+        cursor: pointer;
       }
 
       section {
@@ -74,6 +75,7 @@
         font-weight: bolder;
         color: white;
         cursor: pointer;
+        text-align: center;
       }
     </style>
   </head>
@@ -208,6 +210,9 @@
           pop_up.querySelector(".pop_up_sted").textContent =
             ret.oprindelsesregion;
         }
+        document
+          .querySelector("#luk")
+          .addEventListener("click", () => (pop_up.style.display = "none"));
       }
     </script>
   </body>
