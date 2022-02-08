@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      article {
+        background-color: rgb(219, 216, 216);
+        border: 1px solid black;
+      }
+
+      section {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+        gap: 30px;
+      }
+
+      body {
+        margin: 50px;
+      }
+
+      p,
+      h2 {
+        padding-left: 20px;
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      .valgt {
+        background-color: red;
+      }
+
+      button {
+        border-radius: 4px;
+        text-decoration: none;
+        border: none;
+        padding: 15px 30px;
+      }
+
+      nav {
+        text-align: center;
+      }
+
+      #pop_up {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: none;
+        overflow: scroll;
+      }
+
+      #pop_up article {
+        width: 80vw;
+        display: flex;
+        margin: 4rem auto;
+        border-radius: 25px;
+        padding: 12px;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <section id="pop_up">
+      <div id="luk">LUK</div>
+      <article>
+        <img src="" alt="" />
+        <h2></h2>
+        <p id="pop_up_info"></p>
+        <p id="pop_up_pris"></p>
+        <p id="pop_up_sted"></p>
+      </article>
+    </section>
+
+    <header>
+      <h1>Alle</h1>
+      <nav>
+        <button data-kategori="alle" class="valgt">Alle</button>
+        <button data-kategori="hovedretter">Hovedretter</button>
+        <button data-kategori="forretter">Forretter</button>
+        <button data-kategori="desserter">Desserter</button>
+        <button data-kategori="side_orders">Side orders</button>
+        <button data-kategori="drikkevarer">Drikkevarer</button>
+      </nav>
+    </header>
+    <main>
+      <section class="data_menu"></section>
+      <template>
+        <article>
+          <img src="" alt="" />
+          <h2></h2>
+          <p id="info"></p>
+          <p id="pris"></p>
+        </article>
+      </template>
+    </main>
+
+    <script>
+      const header = document.querySelector("header h1");
+      const url = "https://babushka-dd8a.restdb.io/rest/menu";
+      const options = {
+        headers: {
+          "x-apikey": "600ec2fb1346a1524ff12de4",
+        },
+      };
+
+      document.addEventListener("DOMContentLoaded", start);
+
+      // tilføjer variabler
+      let retter;
+      let filter = "alle";
+
+      // første funktion der kaldes efter DOM er loaded
+      function start() {
+        // tilføjer eventlistener på alle knappe
+        const filterKnapper = document.querySelectorAll("nav button");
+        filterKnapper.forEach((knap) =>
+          knap.addEventListener("click", filtrerRetter)
+        );
+      }
+
+      // eventhandler:
+      function filtrerRetter() {
+        console.log("knap");
+        // sætter filter-variablen lig med værdien af data/ret-attributten for den valgte knap.
+        filter = this.dataset.kategori;
+
+        // kalder på json
+        vis(retter);
+
+        // skifter overskrift alt efter hvilken knap, man trykker på
+        header.textContent = this.textContent;
+
+        // fjerner klassen "valgt", når man trykker på en anden knap
+        document.querySelector(".valgt").classList.remove("valgt");
+        // og tilføjer klassen på den knap
+        this.classList.add("valgt");
+      }
+
+      async function hentData() {
+        console.log("henter data");
+        const response = await fetch(url, options);
+
+        retter = await response.json();
+        vis(retter);
+      }
+
+      hentData();
+
+      function vis(json) {
+        console.log(json);
+      }
+
+      function vis(retter) {
+        const data = document.querySelector(".data_menu");
+        const menuTemplate = document.querySelector("template");
+        // sletter indholdet fra listen, altså det HTML-element du appender template-klonen til.
+        data.textContent = "";
+
+        // løber retlisten igennem og indsætter data i en template
+        retter.forEach((ret) => {
+          console.log("Kategori", ret.kategori);
+          if (filter == ret.kategori || filter == "alle") {
+            // placer retterne i HTML
+            const klon = menuTemplate.cloneNode(true).content;
+            klon.querySelector("h2").textContent = ret.navn;
+            klon.querySelector("#info").textContent = ret.kortbeskrivelse;
+            klon.querySelector("#pris").textContent = `Pris: ${ret.pris} DKK`;
+            klon.querySelector("img").src =
+              "medium/" + ret.billednavn + "-md.jpg";
+            data.appendChild(klon);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
