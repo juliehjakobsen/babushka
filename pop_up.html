@@ -66,17 +66,26 @@
         padding: 12px;
         background-color: white;
       }
+
+      #luk {
+        position: fixed;
+        padding: 1em;
+        font-size: 1.7em;
+        font-weight: bolder;
+        color: white;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
     <section id="pop_up">
       <div id="luk">LUK</div>
-      <article>
+      <article class="popup_article">
         <img src="" alt="" />
         <h2></h2>
-        <p id="pop_up_info"></p>
-        <p id="pop_up_pris"></p>
-        <p id="pop_up_sted"></p>
+        <p class="pop_up_info"></p>
+        <p class="pop_up_pris"></p>
+        <p class="pop_up_sted"></p>
       </article>
     </section>
 
@@ -176,9 +185,29 @@
             klon.querySelector("#pris").textContent = `Pris: ${ret.pris} DKK`;
             klon.querySelector("img").src =
               "medium/" + ret.billednavn + "-md.jpg";
+
+            // HTML-indhold til POP-UP
+            klon
+              .querySelector("article")
+              .addEventListener("click", () => visDetajler(ret));
             data.appendChild(klon);
           }
         });
+
+        function visDetajler(ret) {
+          console.log(ret);
+          pop_up.style.display = "block";
+          pop_up.querySelector("img").src =
+            "medium/" + ret.billednavn + "-md.jpg";
+          pop_up.querySelector("h2").textContent = ret.navn;
+          pop_up.querySelector(".pop_up_info").textContent =
+            ret.langbeskrivelse;
+          pop_up.querySelector(
+            ".pop_up_pris"
+          ).textContent = `Pris: ${ret.pris} DKK`;
+          pop_up.querySelector(".pop_up_sted").textContent =
+            ret.oprindelsesregion;
+        }
       }
     </script>
   </body>
