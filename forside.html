@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <title>Bistro Babushka</title>
+    <style>
+      section {
+        text-align: center;
+        font-family: "Abril Fatface", cursive;
+        background-image: url(streger.svg);
+      }
+
+      button {
+        font-family: "Abril Fatface", cursive;
+      }
+
+      h1 {
+        -webkit-text-stroke: 1px black;
+        color: whitesmoke;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h2>VELKOMMEN TIL</h2>
+      <h1>BISTRO BABUSHKA</h1>
+      <button>Klik for at se menuen!</button>
+    </section>
+    <script>
+      document.querySelector("button").addEventListener("click", klikKnap);
+
+      function klikKnap(hvor) {
+        console.log("klikker start-knap");
+        location.href = `separat.html`;
+      }
+    </script>
+  </body>
+</html>
